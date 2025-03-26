@@ -10,17 +10,17 @@ const songSchema = new mongoose.Schema({
         required: true
     },
     coverUrl: {
-        type:String,
+        type: String,
         required: true
     },
     artist: {
         type: String,
         required: true
     },
-    note:{
+    note: {
         type: String,
         required: true
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Song', songSchema);

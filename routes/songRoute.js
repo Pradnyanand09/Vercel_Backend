@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const Song = require('../models/song.js');
+const Song = require('../models/song');
 
 // Cloudinary Config
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Multer Setup
@@ -17,8 +17,8 @@ const upload = multer({ storage });
 
 // Upload Song with Cover
 router.post('/upload', upload.fields([
-  { name: 'audio', maxCount: 1 },
-  { name: 'cover', maxCount: 1 }
+    { name: 'audio', maxCount: 1 },
+    { name: 'cover', maxCount: 1 }
 ]), async (req, res) => {
     try {
         if (!req.files || !req.files.audio || !req.files.cover) {
@@ -57,9 +57,9 @@ router.post('/upload', upload.fields([
         });
 
         await newSong.save();
-        res.json(newSong);
+        res.status(201).json(newSong);
     } catch (error) {
-        console.error(error);
+        console.error('Upload Error:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
@@ -67,14 +67,12 @@ router.post('/upload', upload.fields([
 // Get All Songs
 router.get('/', async (req, res) => {
     try {
-        const songs = await Song.find();
+        const songs = await Song.find().sort({ createdAt: -1 });
         res.json(songs);
     } catch (error) {
-        console.error(error);
+        console.error('Fetch Error:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
 
 module.exports = router;
-
-//callback function
