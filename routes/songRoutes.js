@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const Song = require('../models/Song');
+const Song = require('../models/song.js');
 
 // Cloudinary Config
 cloudinary.config({
